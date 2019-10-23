@@ -55,13 +55,7 @@ final class Plugin
             add_filter( $filter, $this, 999 );
         }
 
-        add_filter( 'wp_calculate_image_srcset', function ( $sources ) {
-            foreach ( $sources as $key => $source ) {
-                $sources[ $key ]['url'] = $this( $source['url'] );
-            }
-
-            return $sources;
-        } );
+        add_filter( 'wp_calculate_image_srcset', [ $this, 'filter_srcset' ], 999 );
     }
 
     /**
@@ -119,6 +113,19 @@ final class Plugin
         $extensions_regex = $this->get_extensions_regex();
 
         return "https?:\/\/($hosts_regex)\/([^\"^']+\.[$extensions_regex])";
+    }
+
+    /**
+     * @param array $sources
+     * @return array
+     */
+    public function filter_srcset( array $sources )
+    {
+        foreach ( $sources as $key => $source ) {
+            $sources[ $key ]['url'] = $this( $source['url'] );
+        }
+
+        return $sources;
     }
 
     private function _init_hosts()
