@@ -180,7 +180,7 @@ final class Plugin
      */
     public function __invoke( string $uri ) : string
     {
-        if ( ! apply_filters( 'innocode_cdn_should_replace_url', true ) ) {
+        if ( ! apply_filters( 'innocode_cdn_should_replace_url', true, $uri ) ) {
             return $uri;
         }
 
