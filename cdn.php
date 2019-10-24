@@ -2,7 +2,7 @@
 /**
  * Plugin Name: CDN
  * Description: Change all static files URLs to CDN domain.
- * Version: 3.1.1
+ * Version: 3.1.2
  * Author: Innocode
  * Author URI: https://innocode.com
  * Tested up to: 5.2.3
