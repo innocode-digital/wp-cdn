@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CDN
- * Description: Change all static files urls to CDN domain.
+ * Description: Change all static files URLs to CDN domain.
  * Version: 3.1.1
  * Author: Innocode
  * Author URI: https://innocode.com

@@ -7,7 +7,7 @@
     "php": ">=7.1",
     "composer/installers": "~1.0"
   },
-  "description": "Change all static files urls to CDN domain.",
+  "description": "Change all static files URLs to CDN domain.",
   "autoload": {
     "psr-4": {
       "Innocode\\CDN\\": "src/"
