@@ -2,7 +2,7 @@
 /**
  * Plugin Name: CDN
  * Description: Change all static files URLs to CDN domain.
- * Version: 3.1.2
+ * Version: 3.2.0
  * Author: Innocode
  * Author URI: https://innocode.com
  * Tested up to: 5.2.3
@@ -17,8 +17,8 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 if ( defined( 'CDN_DOMAIN' ) ) {
-    $innocode_cdn = new CDN\Plugin();
-    $innocode_cdn->run();
+    $GLOBALS['innocode_cdn'] = new CDN\Plugin();
+    $GLOBALS['innocode_cdn']->run();
 }
 
 if ( ! function_exists( 'get_cdn_attachment_url' ) ) {
