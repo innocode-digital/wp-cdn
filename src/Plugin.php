@@ -11,15 +11,15 @@ final class Plugin
     /**
      * @var string
      */
-    private $_url;
+    private $url;
     /**
      * @var array
      */
-    private $_hosts = [];
+    private $hosts = [];
     /**
      * @var array
      */
-    private $_extensions = [
+    private $extensions = [
         // images
         'png', 'jpg', 'jpeg', 'gif', 'tif', 'bmp', 'svg', 'webp',
         // assets
@@ -36,8 +36,8 @@ final class Plugin
 
     public function __construct()
     {
-        $this->_url = defined( 'CDN_DOMAIN' ) ? 'https://' . CDN_DOMAIN : '';
-        $this->_init_hosts();
+        $this->url = defined( 'CDN_DOMAIN' ) ? 'https://' . CDN_DOMAIN : '';
+        $this->init_hosts();
     }
 
     public function run()
@@ -63,7 +63,7 @@ final class Plugin
      */
     public function get_url() : string
     {
-        return $this->_url;
+        return $this->url;
     }
 
     /**
@@ -71,7 +71,7 @@ final class Plugin
      */
     public function get_hosts() : array
     {
-        return apply_filters( 'innocode_cdn_hosts', $this->_hosts );
+        return apply_filters( 'innocode_cdn_hosts', $this->hosts );
     }
 
     /**
@@ -79,7 +79,7 @@ final class Plugin
      */
     public function get_extensions() : array
     {
-        return apply_filters( 'innocode_cdn_extensions', $this->_extensions );
+        return apply_filters( 'innocode_cdn_extensions', $this->extensions );
     }
 
     /**
@@ -128,18 +128,27 @@ final class Plugin
         return $sources;
     }
 
-    private function _init_hosts()
+    private function init_hosts()
     {
         if ( false !== ( $hosts = wp_cache_get( 'site-hosts', 'innocode_cdn' ) ) ) {
-            $this->_hosts = $hosts;
+            $this->hosts = $hosts;
 
             return;
         }
 
-        foreach ( [
+        $urls = [
             home_url(),
             site_url(),
-        ] as $url ) {
+        ];
+
+        if ( is_multisite() ) {
+            $urls = array_merge( $urls, [
+                network_home_url(),
+                network_site_url(),
+            ] );
+        }
+
+        foreach ( $urls as $url ) {
             $url = wp_parse_url( $url );
 
             if ( ! isset( $url['host'] ) ) {
@@ -156,22 +165,22 @@ final class Plugin
                 }
             }
 
-            $this->_hosts[] = $host;
+            $this->hosts[] = $host;
         }
 
         $blog_id = get_current_blog_id();
 
         if ( is_multisite() ) {
-            $this->_hosts = array_merge( $this->_hosts, Helpers::get_blog_domains( $blog_id ) );
+            $this->hosts = array_merge( $this->hosts, Helpers::get_blog_domains( $blog_id ) );
         }
 
         if ( defined( 'DOMAIN_MAPPING' ) ) {
-            $this->_hosts = array_merge( $this->_hosts, Helpers::get_blog_domain_mapping( $blog_id ) );
+            $this->hosts = array_merge( $this->hosts, Helpers::get_blog_domain_mapping( $blog_id ) );
         }
 
-        $this->_hosts = array_unique( $this->_hosts );
+        $this->hosts = array_unique( $this->hosts );
 
-        wp_cache_set( 'site-hosts', $this->_hosts, 'innocode_cdn', HOUR_IN_SECONDS );
+        wp_cache_set( 'site-hosts', $this->hosts, 'innocode_cdn', HOUR_IN_SECONDS );
     }
 
     /**

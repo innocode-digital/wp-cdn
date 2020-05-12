@@ -12,7 +12,7 @@ class Helpers
      * @param int $id
      * @return array
      */
-    public static function get_blog_domains( int $id )
+    public static function get_blog_domains( int $id ) : array
     {
         global $wpdb;
 
@@ -25,7 +25,7 @@ class Helpers
      * @param int $id
      * @return array
      */
-    public static function get_blog_domain_mapping( int $id )
+    public static function get_blog_domain_mapping( int $id ) : array
     {
         global $wpdb;
 
