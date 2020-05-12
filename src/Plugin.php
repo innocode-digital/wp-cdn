@@ -105,14 +105,21 @@ final class Plugin
     }
 
     /**
+     * @param bool $ignore_extensions
      * @return string
      */
-    public function get_regex() : string
+    public function get_regex( bool $ignore_extensions = false ) : string
     {
         $hosts_regex = $this->get_hosts_regex();
+        $regex = "https?:\/\/($hosts_regex)\/([^\"^']+";
+
+        if ( $ignore_extensions ) {
+            return "$regex)";
+        }
+
         $extensions_regex = $this->get_extensions_regex();
 
-        return "https?:\/\/($hosts_regex)\/([^\"^']+\.[$extensions_regex])";
+        return "$regex\.[$extensions_regex])";
     }
 
     /**
@@ -185,15 +192,16 @@ final class Plugin
 
     /**
      * @param string $uri
+     * @param bool   $ignore_extensions
      * @return string
      */
-    public function __invoke( string $uri ) : string
+    public function __invoke( string $uri, bool $ignore_extensions = false ) : string
     {
         if ( ! apply_filters( 'innocode_cdn_should_replace_url', true, $uri ) ) {
             return $uri;
         }
 
-        $regex = $this->get_regex();
+        $regex = $this->get_regex( $ignore_extensions );
         $url = $this->get_url();
 
         return preg_replace( "/$regex/Ui", "$url/$2", $uri );
