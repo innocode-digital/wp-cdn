@@ -32,7 +32,7 @@ or [WP-CLI](https://make.wordpress.org/cli/handbook/): `wp plugin activate wp-cd
 Add required constant (usually to `wp-config.php`):
 
 ````
-define( 'CDN', '' ); // E.g. 'xxxxxx.cloudfront.net'
+define( 'CDN_DOMAIN', '' ); // E.g. 'xxxxxx.cloudfront.net'
 ````
 
 ### Documentation
