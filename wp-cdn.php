@@ -2,7 +2,7 @@
 /**
  * Plugin Name: CDN
  * Description: Change all static files URLs to CDN domain.
- * Version: 3.4.0
+ * Version: 3.4.1
  * Author: Innocode
  * Author URI: https://innocode.com
  * Tested up to: 5.4.1
@@ -22,7 +22,7 @@ if ( defined( 'CDN_DOMAIN' ) ) {
 }
 
 if ( ! function_exists( 'get_cdn_attachment_url' ) ) {
-    function get_cdn_attachment_url( $uri ) {
+    function get_cdn_attachment_url( string $uri, bool $ignore_extensions = false ) {
         /**
          * @var CDN\Plugin $innocode_cdn
          */
@@ -35,6 +35,6 @@ if ( ! function_exists( 'get_cdn_attachment_url' ) ) {
             );
         }
 
-        return $innocode_cdn( $uri );
+        return $innocode_cdn( $uri, $ignore_extensions );
     }
 }
