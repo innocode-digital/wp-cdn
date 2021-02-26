@@ -119,7 +119,7 @@ final class Plugin
 
         $extensions_regex = $this->get_extensions_regex();
 
-        return "$regex\.[$extensions_regex])";
+        return "$regex\.($extensions_regex))";
     }
 
     /**
